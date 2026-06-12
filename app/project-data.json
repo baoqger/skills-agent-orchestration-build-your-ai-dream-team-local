@@ -1,0 +1,46 @@
+{
+  "projects": [
+    {
+      "name": "Contributor Onboarding Refresh",
+      "owner": "Mona Patel",
+      "status": "On Track",
+      "recentActivity": "Updated welcome issues, refined first-time contributor checklist, and published mentor office hours for next sprint.",
+      "priority": "High"
+    },
+    {
+      "name": "Docs Search Improvements",
+      "owner": "Luis Romero",
+      "status": "In Review",
+      "recentActivity": "Merged search relevance tuning and opened a pull request for faster sidebar filtering across contributor guides.",
+      "priority": "Medium"
+    },
+    {
+      "name": "Community Metrics Dashboard",
+      "owner": "Ava Chen",
+      "status": "At Risk",
+      "recentActivity": "Data feed is delayed while the team verifies issue labeling consistency before the weekly contributor report.",
+      "priority": "High"
+    },
+    {
+      "name": "Release Notes Automation",
+      "owner": "Noah Williams",
+      "status": "On Track",
+      "recentActivity": "Added draft note generation for merged pull requests and validated formatting against the last two release cycles.",
+      "priority": "Medium"
+    },
+    {
+      "name": "Starter Task Curation",
+      "owner": "Priya Singh",
+      "status": "Planned",
+      "recentActivity": "Collected new beginner-friendly issues from maintainers and is grouping them by skill area for the next cohort.",
+      "priority": "Low"
+    },
+    {
+      "name": "Accessibility QA Sweep",
+      "owner": "Ethan Brooks",
+      "status": "Blocked",
+      "recentActivity": "Waiting on design clarifications for keyboard focus states before finalizing contributor testing instructions.",
+      "priority": "High"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Pulse</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="page-header">
+    <div class="page-shell">
+      <p class="eyebrow">Open Source Delivery Dashboard</p>
+      <h1>Project Pulse</h1>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-shell">
+      <div class="intro">
+        <p>Track active contributor initiatives, current status, and the most important next step for each project.</p>
+      </div>
+      <div class="dashboard" id="dashboard" aria-live="polite" aria-busy="true">
+        <p class="loading-state">Loading project updates…</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const dashboard = document.getElementById("dashboard");
+
+    function toToken(value) {
+      return String(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    }
+
+    function summarizeProject(project) {
+      const { owner, status, priority } = project;
+
+      if (status === "Blocked") {
+        return `Contributors should pause on new work and check with ${owner} for the unblock plan. ${priority} priority means updates should be shared quickly.`;
+      }
+
+      if (status === "At Risk") {
+        return `Contributors can help stabilize this ${priority.toLowerCase()} priority effort by surfacing blockers early and coordinating with ${owner}.`;
+      }
+
+      if (status === "In Review") {
+        return `Contributors should focus on validation, feedback, and small fixes while ${owner} guides final review.`;
+      }
+
+      if (status === "Planned") {
+        return `Contributors can prepare with ${owner} by reviewing scope and lining up starter tasks before work begins.`;
+      }
+
+      return `Contributors can move forward with aligned tasks and keep ${owner} informed as this ${priority.toLowerCase()} priority project stays on track.`;
+    }
+
+    function renderProjects(projects) {
+      dashboard.setAttribute("aria-busy", "false");
+
+      if (!Array.isArray(projects) || projects.length === 0) {
+        dashboard.innerHTML = '<p class="loading-state">No projects are available right now.</p>';
+        return;
+      }
+
+      dashboard.innerHTML = projects.map((project) => `
+        <article class="project-card" data-status="${toToken(project.status)}" data-priority="${toToken(project.priority)}">
+          <div class="project-header">
+            <h2 class="project-title">${project.name}</h2>
+            <span class="badge-priority" aria-label="priority ${project.priority}">${project.priority} Priority</span>
+          </div>
+          <p class="project-owner">Owner: ${project.owner}</p>
+          <div class="project-meta">
+            <span class="badge-status" aria-label="status ${project.status}">${project.status}</span>
+            <p class="project-activity"><strong>Recent activity:</strong> ${project.recentActivity}</p>
+          </div>
+          <p class="project-summary">${summarizeProject(project)}</p>
+        </article>
+      `).join("");
+    }
+
+    fetch("project-data.json")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Unable to load project-data.json");
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        renderProjects(data.projects);
+      })
+      .catch(() => {
+        dashboard.setAttribute("aria-busy", "false");
+        dashboard.innerHTML = '<p class="loading-state">Project updates could not be loaded. Please refresh and try again.</p>';
+      });
+  </script>
+</body>
+</html>
